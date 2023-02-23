@@ -66,6 +66,7 @@ function App() {
       {/* Display the weather data */}
       {weather && (
         <div>
+          <p>Region: {weather.location.region}</p>
           <p>Last Updated: {weather.current.last_updated}</p>
           <p>Rain:<br></br><br></br>{weather.current.precip_mm} mm<br></br>{weather.current.precip_in} in</p>
           <p>Temperature:<br></br><br></br>{weather.current.temp_c} °C<br></br>Feels Like: {weather.current.feelslike_c} °C<br></br><br></br>{weather.current.temp_f} °F<br></br>Feels Like: {weather.current.feelslike_f} °F<br></br><br></br>Humidity: {weather.current.humidity}</p>
