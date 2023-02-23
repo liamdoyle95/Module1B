@@ -9,6 +9,7 @@ function App() {
   
   // API key for weatherapi.com
   const apiKey = '836a8e5b3c2245329ac232331232202';
+  // TRIAL Ends on 08/Mar/2023
   
   // Weather API URL
   const apiUrl = 'https://api.weatherapi.com/v1/current.json';
