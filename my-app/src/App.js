@@ -38,9 +38,29 @@ function App() {
       
       {/* Dropdown menu for selecting location */}
       <select value={location} onChange={(event) => setLocation(event.target.value)}>
-        <option value="London">London</option>
-        <option value="New York">New York</option>
-        <option value="Sydney">Sydney</option>
+        <option value="Marham,UK">Marham</option>
+        <option value="Waddington, UK">Waddington</option>
+        <option value="Scampton, UK">Scampton</option>
+        <option value="Coningsby, UK">Coningsby</option>
+        <option value="Wittering, UK">Wittering</option>
+        <option value="Brize Norton, UK">Brize Norton</option>
+        <option value="Leeming, UK">Leeming</option>
+        <option value="Valley, UK">Valley</option>
+        <option value="Boulmer, UK">Boulmer</option>
+        <option value="Syerston, UK">Syerston</option>
+        <option value="Woodvale, UK">Woodvale</option>
+        <option value="Digby, UK">Digby</option>
+        <option value="Northolt, UK">Northolt</option>
+        <option value="Halton, UK">Halton</option>
+        <option value="Akrotiri, UK">Akrotiri</option>
+        <option value="Benson, UK">Benson</option>
+        <option value="Shawbury, UK">Shawbury</option>
+        <option value="High Wycombe, UK">High Wycombe</option>
+        <option value="Boscombe Down, UK">Boscombe Down</option>
+        <option value="Lossiemouth, UK">Lossiemouth</option>
+        <option value="Flyingdales, UK">Flyingdales</option>
+        <option value="Menwith Hill, UK">Menwith Hill</option>
+        <option value="Lakenheath, UK">Lakenheath</option>
       </select>
       
       {/* Display the weather data */}
