@@ -47,10 +47,17 @@ function App() {
       {weather && (
         <div>
           <p>Last Updated: {weather.current.last_updated}</p>
-          <p>Temperature:<br></br><br></br>{weather.current.temp_c} °C<br></br>{weather.current.temp_f} °F</p>
+          <p>Rain:<br></br><br></br>{weather.current.precip_mm} mm<br></br>{weather.current.precip_in} in</p>
+          <p>Temperature:<br></br><br></br>{weather.current.temp_c} °C<br></br>Feels Like: {weather.current.feelslike_c} °C<br></br><br></br>{weather.current.temp_f} °F<br></br>Feels Like: {weather.current.feelslike_f} °F<br></br><br></br>Humidity: {weather.current.humidity}</p>
+          <p>UV: {weather.current.uv}</p>
+          <p>Condition: {weather.current.condition.text} - {weather.current.cloud} %</p>
 
-          
-          <p>Condition: {weather.current.condition.text}</p>
+          <p>Wind:<br></br><br></br>{weather.current.wind_mph} mph<br></br>{weather.current.wind_mph} kph<br></br><br></br>Gust: <br></br><br></br>{weather.current.gust_mph} mph<br></br>{weather.current.gust_mph} kph<br></br><br></br>Direction: {weather.current.wind_dir} - {weather.current.wind_degree} degrees</p>
+
+          <p>Visibility:<br></br><br></br>{weather.current.vis_miles} miles<br></br>{weather.current.vis_km} km</p>
+
+
+          <p>Pressure:<br></br><br></br>{weather.current.pressure_mb} mb<br></br>{weather.current.pressure_in} in</p>
           
         </div>
       )}
