@@ -6,10 +6,12 @@ import './App.css';
 function App() {
   const [weather, setWeather] = useState(null);
   const [location, setLocation] = useState('London');
-
+  
   const apiKey = 'a4cd8dd2af9b4a37997210906231007';
+
   const apiUrl = 'https://api.weatherapi.com/v1/current.json';
   
+  // fetch weather data from API
   const fetchWeather = async (location) => {
     const query = queryString.stringify({ key: apiKey, q: location });
     const url = `${apiUrl}?${query}`;
