@@ -53,12 +53,27 @@ function App() {
   };
   
   return (
-    <div>
-      <h1>Weather for {location}</h1>
-      
-      <select value={location} onChange={(event) => setLocation(event.target.value)}>
-      <option value="Ascension Islands">Ascension Islands</option>
+    <div>     
+      {weather && (
+        <div>
+          <div className="toggle-buttons">
+
+            <button
+              className={activeView === 'current' ? 'active' : ''}
+              onClick={() => setActiveView('current')}
+            >
+              Current Weather
+            </button>
+            <button
+              className={activeView === 'forecast' ? 'active' : ''}
+              onClick={() => setActiveView('forecast')}
+            >
+              Forecast
+            </button>
+          </div>
+          <select className="select-location" value={location} onChange={(event) => setLocation(event.target.value)}>
       <option value="Akrotiri, Limassol">Akrotiri</option>
+      <option value="Ascension Islands">Ascension Islands</option>
       <option value="Benson, UK">Benson</option>
       <option value="Boscombe Down, UK">Boscombe Down</option>
       <option value="Boulmer, UK">Boulmer</option>
@@ -94,29 +109,13 @@ function App() {
       <option value="Woodvale, UK">Woodvale</option>
       <option value="Wyton, UK">Wyton</option>
       </select>
-   
-      {weather && (
-        <div>
-          <div className="toggle-buttons">
 
-            <button
-              className={activeView === 'current' ? 'active' : ''}
-              onClick={() => setActiveView('current')}
-            >
-              Current Weather
-            </button>
-            <button
-              className={activeView === 'forecast' ? 'active' : ''}
-              onClick={() => setActiveView('forecast')}
-            >
-              Forecast
-            </button>
-          </div>
-          <div className="weather-info">
+      <br></br><br></br>
+
+          <div className="weather-container">
             {activeView === 'current' && (
-              <div>
-                <h3>Current Weather</h3>
-                <h3>Location</h3>
+            <div className="current-weather">
+                <h3>Current Weather for {location}</h3>
           <p>{weather.location.region}, {weather.location.country}</p>
           <p>Lat: {weather.location.lat}, Long: {weather.location.lon}</p>
           <p>Local Time: {formatTime(weather.location.localtime)}, {weather.location.tz_id}</p>
@@ -169,8 +168,8 @@ function App() {
               </div>
             )}
             {activeView === 'forecast' && (
-              <div>
-                <h3>Forecast</h3>
+               <div className="forecast">
+                <h3>Forecast for {location}</h3>
                 {weather.forecast.forecastday.map((day) => (
                   <div key={day.date}>
                             <h4>{formatDate(day.date)}</h4>
