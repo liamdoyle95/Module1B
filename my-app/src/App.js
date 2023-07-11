@@ -71,6 +71,7 @@ function App() {
               Forecast
             </button>
           </div>
+          
           <select className="select-location" value={location} onChange={(event) => setLocation(event.target.value)}>
       <option value="Akrotiri, Limassol">Akrotiri</option>
       <option value="Ascension Islands">Ascension Islands</option>
