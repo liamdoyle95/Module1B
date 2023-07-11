@@ -93,13 +93,12 @@ function App() {
           <p><strong>Last Updated:</strong> {weather.current.last_updated}</p>
           <br></br>
           <p>
-            <strong>Rain:</strong>
-            <br></br><br></br>{weather.current.precip_mm} mm | {weather.current.precip_in} in
+          <strong>Temperature:</strong>
+            <br></br><br></br>{weather.current.temp_c} °C | Feels Like: {weather.current.feelslike_c} °C<br></br><br></br>{weather.current.temp_f} °F | Feels Like: {weather.current.feelslike_f} °F
             
             <br></br><br></br>
           
-            <strong>Temperature:</strong>
-            <br></br><br></br>{weather.current.temp_c} °C | Feels Like: {weather.current.feelslike_c} °C<br></br><br></br>{weather.current.temp_f} °F | Feels Like: {weather.current.feelslike_f} °F
+            <strong>Rain:</strong> {weather.current.precip_mm} mm | {weather.current.precip_in} in
             
             <br></br><br></br>
             
@@ -115,11 +114,11 @@ function App() {
             
             <br></br><br></br>
             
-            <strong>Wind Speed:</strong><br></br><br></br>{weather.current.wind_mph} mph | {weather.current.wind_mph} kph
+            <strong>Wind Speed:</strong> {weather.current.wind_mph} mph | {weather.current.wind_mph} kph
             
             <br></br><br></br>
             
-            <strong>Wind Gust:</strong><br></br><br></br>{weather.current.gust_mph} mph | {weather.current.gust_mph} kph
+            <strong>Wind Gust:</strong> {weather.current.gust_mph} mph | {weather.current.gust_mph} kph
             
             <br></br><br></br>
             
@@ -127,11 +126,11 @@ function App() {
             
             <br></br><br></br>
             
-            <strong>Visibility:</strong>:<br></br><br></br>{weather.current.vis_miles} miles | {weather.current.vis_km} km
+            <strong>Visibility:</strong> {weather.current.vis_miles} miles | {weather.current.vis_km} km
             
             <br></br><br></br>
             
-            <strong>Pressure:</strong><br></br><br></br>{weather.current.pressure_mb} mb | {weather.current.pressure_in} in</p>
+            <strong>Pressure:</strong> {weather.current.pressure_mb} mb | {weather.current.pressure_in} in</p>
 
 
 {/* 
