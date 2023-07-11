@@ -81,15 +81,10 @@ function App() {
           <h3>Location</h3>
           <p>{weather.location.region}, {weather.location.country}</p>
           <p>Lat: {weather.location.lat}, Long: {weather.location.lon}</p>
+          <p>Local Time: {weather.location.localtime}, {weather.location.tz_id}</p>
+         
          <br></br>
-          {/* "name": "Waddington",
-        "region": "Lincolnshire",
-        "country": "United Kingdom",
-        "lat": 53.17,
-        "lon": -0.53,
-        "tz_id": "Europe/London",
-        "localtime_epoch": 1677115140,
-        "localtime": "2023-02-23 1:19" */}
+
           <p><strong>Last Updated:</strong> {weather.current.last_updated}</p>
           <br></br>
           <p>
@@ -130,7 +125,9 @@ function App() {
             
             <br></br><br></br>
             
-            <strong>Pressure:</strong> {weather.current.pressure_mb} mb | {weather.current.pressure_in} in</p>
+            <strong>Pressure:</strong> {weather.current.pressure_mb} mb | {weather.current.pressure_in} in
+
+            </p>
 
 
 {/* 
