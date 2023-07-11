@@ -76,6 +76,8 @@ function App() {
               Forecast
             </button>
           </div>
+
+          <br></br>
           
           <select className="select-location" value={location} onChange={(event) => setLocation(event.target.value)}>
       <option value="London">Select a location</option>
@@ -117,7 +119,7 @@ function App() {
       <option value="Wyton, UK">Wyton</option>
       </select>
 
-      <br></br><br></br>
+<br></br>
 
       <div className="weather-container">
               <h3 className="parameters" onClick={toggleParametersVisibility}>Aircraft Parameters</h3>
@@ -253,35 +255,32 @@ If winds are above 35 KTS: Do NOT open Panels
                 {weather.forecast.forecastday.map((day) => (
                   <div className="weather-details" key={day.date}>
                             <h4>{formatDate(day.date)}</h4>
-              <strong>Temperature:</strong>
-            <br></br><br></br>Average: {day.day.avgtemp_c} °C | Min: {day.day.mintemp_c} °C | Max: {day.day.maxtemp_c} °C<br></br><br></br>Average: {day.day.avgtemp_f} °F | Min: {day.day.mintemp_f} °F | Max: {day.day.maxtemp_f} °F
-              
-              <br></br><br></br>
-              
-              <strong>Rain:</strong> {day.day.totalprecip_mm} mm | {day.day.totalprecip_in} in
-              <br></br>
-              <strong>Chance of Rain:</strong> {day.day.daily_chance_of_rain} % | {day.day.condition.text}
-              <br></br><br></br>
+                            <br></br>
+              <strong>Temperature</strong>
+            <br></br>Avg {day.day.avgtemp_c} °C | Min {day.day.mintemp_c} °C | Max {day.day.maxtemp_c} °C<br></br>Avg {day.day.avgtemp_f} °F | Min {day.day.mintemp_f} °F | Max {day.day.maxtemp_f} °F
 
-<strong>Snow:</strong> {day.day.totalsnow_cm} cm
-<br></br>
-<strong>Chance of Snow:</strong> {day.day.daily_chance_of_snow} % 
+            <br></br><br></br>
+
+<strong>Visibility (Avg)</strong><br></br>{day.day.avgvis_miles} miles | {day.day.avgvis_km} km
 
 <br></br><br></br>
 
-              <strong>Windspeed:</strong> Max: {day.day.maxwind_mph} mph
+            <strong>Windspeed</strong><br></br>Max {day.day.maxwind_mph} mph
+
+              <br></br><br></br>
+              
+              <strong>Rain</strong><br></br>{day.day.totalprecip_mm} mm | {day.day.totalprecip_in} in | {day.day.daily_chance_of_rain} % chance of {day.day.condition.text}
+              <br></br><br></br>
+
+<strong>Snow</strong><br></br>{day.day.totalsnow_cm} cm | {day.day.daily_chance_of_snow} % chance
+
+<br></br><br></br>
+
+              <strong>Humidity (Avg)</strong><br></br>{day.day.avghumidity}
 
               <br></br><br></br>
 
-              <strong>Visibility:</strong> Average: {day.day.avgvis_miles} miles | {day.day.avgvis_km} km
-
-              <br></br><br></br>
-
-              <strong>Humidity:</strong> Average: {day.day.avghumidity}
-
-              <br></br><br></br>
-
-              <strong>UV: </strong> {day.day.uv}
+              <strong>UV</strong><br></br> {day.day.uv}
 
               <br></br><br></br>
 
