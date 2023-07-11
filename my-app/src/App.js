@@ -6,7 +6,7 @@ import './App.css';
 function App() {
   const [weather, setWeather] = useState(null);
   const [location, setLocation] = useState('London');
-  const [activeView, setActiveView] = useState('current'); // Track the active view
+  const [activeView, setActiveView] = useState('current');
   
   // API key for weatherapi.com
   const apiKey = '14fd6cf7039b4fd68cf213908231007';
@@ -73,6 +73,7 @@ function App() {
           </div>
           
           <select className="select-location" value={location} onChange={(event) => setLocation(event.target.value)}>
+      <option value="London">Select a location</option>
       <option value="Akrotiri, Limassol">Akrotiri</option>
       <option value="Ascension Islands">Ascension Islands</option>
       <option value="Benson, UK">Benson</option>
@@ -116,63 +117,61 @@ function App() {
           <div className="weather-container">
             {activeView === 'current' && (
             <div className="current-weather">
-                <h3>Current Weather for {location}</h3>
-          <p>{weather.location.region}, {weather.location.country}</p>
-          <p>Lat: {weather.location.lat}, Long: {weather.location.lon}</p>
-          <p>Local Time: {formatTime(weather.location.localtime)}, {weather.location.tz_id}</p>
-         
-         <br></br>
-
-          <p><strong>Last Updated:</strong> {formatDateAndTime(weather.current.last_updated)}</p>
+                <h3 className="title">Current Weather for {location}</h3>
+          <p className="subtitle">{weather.location.region}, {weather.location.country} | Lat: {weather.location.lat}, Long: {weather.location.lon} | Local Time: {formatTime(weather.location.localtime)}, {weather.location.tz_id}</p>
+          <p className="last-updated"><strong>Last Updated:</strong> {formatDateAndTime(weather.current.last_updated)}</p>
           <br></br>
-          <p>
-          <strong>Temperature:</strong>
-            <br></br><br></br>{weather.current.temp_c} °C | Feels Like: {weather.current.feelslike_c} °C<br></br><br></br>{weather.current.temp_f} °F | Feels Like: {weather.current.feelslike_f} °F
+          <p className="weather-details">
+          <strong>Temperature</strong>
+            <br></br>{weather.current.temp_c} °C | Feels Like: {weather.current.feelslike_c} °C<br></br>{weather.current.temp_f} °F | Feels Like: {weather.current.feelslike_f} °F
             
             <br></br><br></br>
           
-            <strong>Rain:</strong> {weather.current.precip_mm} mm | {weather.current.precip_in} in
+            <strong>Rain</strong> 
+            <br></br>{weather.current.precip_mm} mm | {weather.current.precip_in} in
             
             <br></br><br></br>
             
-            <strong>Humidity:</strong> {weather.current.humidity}
+            <strong>Humidity</strong> 
+            <br></br>{weather.current.humidity}
             
             <br></br><br></br>
             
-            <strong>UV:</strong> {weather.current.uv}
+            <strong>UV</strong><br></br>{weather.current.uv}
             
             <br></br><br></br>
           
-            <strong>Condition:</strong> {weather.current.condition.text} - {weather.current.cloud} %
+            <strong>Condition</strong><br></br>{weather.current.condition.text} - {weather.current.cloud} %
             
             <br></br><br></br>
             
-            <strong>Wind Speed:</strong> {weather.current.wind_mph} mph | {weather.current.wind_mph} kph
+            <strong>Wind Speed</strong><br></br>{weather.current.wind_mph} mph | {weather.current.wind_mph} kph
             
             <br></br><br></br>
             
-            <strong>Wind Gust:</strong> {weather.current.gust_mph} mph | {weather.current.gust_mph} kph
+            <strong>Wind Gust</strong><br></br>{weather.current.gust_mph} mph | {weather.current.gust_mph} kph
             
             <br></br><br></br>
             
-            <strong>Wind Direction:</strong> {weather.current.wind_dir} - {weather.current.wind_degree} degrees
+            <strong>Wind Direction</strong><br></br>{weather.current.wind_dir} - {weather.current.wind_degree} degrees
             
             <br></br><br></br>
             
-            <strong>Visibility:</strong> {weather.current.vis_miles} miles | {weather.current.vis_km} km
+            <strong>Visibility</strong><br></br>{weather.current.vis_miles} miles | {weather.current.vis_km} km
             
             <br></br><br></br>
             
-            <strong>Pressure:</strong> {weather.current.pressure_mb} mb | {weather.current.pressure_in} in
+            <strong>Pressure</strong><br></br>{weather.current.pressure_mb} mb | {weather.current.pressure_in} in
 
             </p>
               </div>
             )}
             {activeView === 'forecast' && (
                <div className="forecast">
-                <h3>Forecast for {location}</h3>
+                <h3 className="title">Forecast for {location}</h3>
+                <p className="subtitle">{weather.location.region}, {weather.location.country} | Lat: {weather.location.lat}, Long: {weather.location.lon} | Local Time: {formatTime(weather.location.localtime)}, {weather.location.tz_id}</p>
                 {weather.forecast.forecastday.map((day) => (
-                  <div key={day.date}>
+                  <div className="weather-details" key={day.date}>
                             <h4>{formatDate(day.date)}</h4>
               <strong>Temperature:</strong>
             <br></br><br></br>Average: {day.day.avgtemp_c} °C | Min: {day.day.mintemp_c} °C | Max: {day.day.maxtemp_c} °C<br></br><br></br>Average: {day.day.avgtemp_f} °F | Min: {day.day.mintemp_f} °F | Max: {day.day.maxtemp_f} °F
