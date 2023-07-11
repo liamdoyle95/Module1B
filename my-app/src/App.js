@@ -7,6 +7,11 @@ function App() {
   const [weather, setWeather] = useState(null);
   const [location, setLocation] = useState('London');
   const [activeView, setActiveView] = useState('current');
+  const [parametersVisible, setParametersVisible] = useState(false);
+
+  const toggleParametersVisibility = () => {
+    setParametersVisible(!parametersVisible);
+  };
   
   // API key for weatherapi.com
   const apiKey = '14fd6cf7039b4fd68cf213908231007';
@@ -114,6 +119,80 @@ function App() {
 
       <br></br><br></br>
 
+      <div className="weather-container">
+              <h3 className="parameters" onClick={toggleParametersVisibility}>Aircraft Parameters</h3>
+              {parametersVisible && (
+          <>
+              <br></br>
+              <h3>Typhoon Limits</h3>
+              <div className="weather-details">
+              <p><strong>Engine Ground Run</strong><br></br><br></br>
+              Min Temp = X °C | X °F & Min Visabilty = X Metres</p>
+              </div><br></br>
+              <div className="weather-details">
+              <p><strong>Wind Speed</strong><br></br><br></br>
+              Divide the wind speed given in MPH by 1.15 to obtain the equivelent speed in KTS.<br></br>
+              Wind Direction refers to where wind is coming from.
+              <br></br><br></br>
+  
+  <table className="title">
+<thead>
+<tr>
+<th></th>
+<th>Crosswind</th>
+<th>Tailwind</th>
+<th>Headwind</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Canopy Opening</strong></td>
+<td>45</td>
+<td>60</td>
+<td>60</td>
+</tr>
+<tr>
+<td><strong>EGR</strong></td>
+<td>N/A</td>
+<td>30</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><strong>Towing</strong></td>
+<td>45</td>
+<td>N/A</td>
+<td>N/A</td>
+</tr>
+<tr>
+<td><strong>Landing / Take Off</strong></td>
+<td>30</td>
+<td>20</td>
+<td>40</td>
+</tr>
+<tr>
+<td><strong>Taxiing</strong></td>
+<td>Cleared up </td>
+<td>to 45 KTS </td>
+<td>surface wind</td>
+</tr>
+</tbody>
+</table>
+<br></br><br></br>
+If Winds are above 60 KTS: Put / Leave in Hangar
+<br></br><br></br>
+If Winds are above 45 KTS: Put / Leave in Hangar or turn into wind
+<br></br><br></br>
+If winds are above 40 KTS: Do NOT use A/C steps
+<br></br><br></br>
+If winds are above 39 KTS: Do NOT open Radome
+<br></br><br></br>
+If winds are above 35 KTS: Do NOT open Panels 
+  </p>
+              </div>
+              </>
+        )}        
+            </div>
+
           <div className="weather-container">
             {activeView === 'current' && (
             <div className="current-weather">
@@ -126,18 +205,25 @@ function App() {
             <br></br>{weather.current.temp_c} °C | Feels Like: {weather.current.feelslike_c} °C<br></br>{weather.current.temp_f} °F | Feels Like: {weather.current.feelslike_f} °F
             
             <br></br><br></br>
+
+            <strong>Visibility</strong><br></br>{weather.current.vis_miles} miles | {weather.current.vis_km} km
+
+            <br></br><br></br>
+            
+            <strong>Wind Speed</strong><br></br>{weather.current.wind_mph} mph
+            
+            <br></br><br></br>
+            
+            <strong>Wind Gust</strong><br></br>{weather.current.gust_mph} mph 
+            
+            <br></br><br></br>
+            
+            <strong>Wind Direction</strong><br></br>{weather.current.wind_dir} - {weather.current.wind_degree} degrees
+
+            <br></br><br></br>
           
             <strong>Rain</strong> 
             <br></br>{weather.current.precip_mm} mm | {weather.current.precip_in} in
-            
-            <br></br><br></br>
-            
-            <strong>Humidity</strong> 
-            <br></br>{weather.current.humidity}
-            
-            <br></br><br></br>
-            
-            <strong>UV</strong><br></br>{weather.current.uv}
             
             <br></br><br></br>
           
@@ -145,19 +231,13 @@ function App() {
             
             <br></br><br></br>
             
-            <strong>Wind Speed</strong><br></br>{weather.current.wind_mph} mph | {weather.current.wind_mph} kph
+            <strong>Humidity</strong> 
+
+            <br></br>{weather.current.humidity}
             
             <br></br><br></br>
             
-            <strong>Wind Gust</strong><br></br>{weather.current.gust_mph} mph | {weather.current.gust_mph} kph
-            
-            <br></br><br></br>
-            
-            <strong>Wind Direction</strong><br></br>{weather.current.wind_dir} - {weather.current.wind_degree} degrees
-            
-            <br></br><br></br>
-            
-            <strong>Visibility</strong><br></br>{weather.current.vis_miles} miles | {weather.current.vis_km} km
+            <strong>UV</strong><br></br>{weather.current.uv}
             
             <br></br><br></br>
             
@@ -189,7 +269,7 @@ function App() {
 
 <br></br><br></br>
 
-              <strong>Windspeed:</strong> Max: {day.day.maxwind_mph} mph | {day.day.maxwind_kph} kph
+              <strong>Windspeed:</strong> Max: {day.day.maxwind_mph} mph
 
               <br></br><br></br>
 
