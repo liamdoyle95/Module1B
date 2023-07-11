@@ -9,41 +9,43 @@ function App() {
   
   // API key for weatherapi.com
   const apiKey = '14fd6cf7039b4fd68cf213908231007';
-  
   // Weather API URLs
   const currentApiUrl = 'https://api.weatherapi.com/v1/current.json';
   const forecastApiUrl = 'https://api.weatherapi.com/v1/forecast.json';
   
-  // Function to fetch weather data from API
   const fetchWeather = async (location) => {
-    // Construct the API URL with the query string
+
     const query = queryString.stringify({ key: apiKey, q: location });
     const currentUrl = `${currentApiUrl}?${query}`;
     const forecastUrl = `${forecastApiUrl}?${query}&days=3`;
-    
-    // Fetch the current weather data from the API
+
     const currentResponse = await fetch(currentUrl);
     const currentData = await currentResponse.json();
     
-    // Fetch the forecast data from the API
     const forecastResponse = await fetch(forecastUrl);
     const forecastData = await forecastResponse.json();
-    
-    // Combine current and forecast data into a single object
+
     const combinedData = {
       current: currentData.current,
       forecast: forecastData.forecast,
       location: currentData.location
     };
-    
-    // Update the state with the weather data
     setWeather(combinedData);
   };
   
-  // Fetch weather data when the component mounts and when the location changes
   useEffect(() => {
     fetchWeather(location);
   }, [location]);
+
+  const formatTime = (timeString) => {
+    const options = { hour: 'numeric', minute: 'numeric', hour12: true };
+    return new Date(timeString).toLocaleTimeString(undefined, options);
+  };
+
+  const formatDate = (dateString) => {
+    const options = { day: 'numeric', month: 'long', year: 'numeric' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
   
   return (
     <div>
@@ -90,16 +92,17 @@ function App() {
    
       {weather && (
         <div>
-          {/* Display current weather data */}
+
           <h3>Current Weather</h3>
+          
           <h3>Location</h3>
           <p>{weather.location.region}, {weather.location.country}</p>
           <p>Lat: {weather.location.lat}, Long: {weather.location.lon}</p>
-          <p>Local Time: {weather.location.localtime}, {weather.location.tz_id}</p>
+          <p>Local Time: {formatTime(weather.location.localtime)}, {weather.location.tz_id}</p>
          
          <br></br>
 
-          <p><strong>Last Updated:</strong> {weather.current.last_updated}</p>
+          <p><strong>Last Updated:</strong> {formatDate(weather.current.last_updated)}</p>
           <br></br>
           <p>
           <strong>Temperature:</strong>
@@ -144,22 +147,26 @@ function App() {
             </p>
           
           <br></br><br></br>
-          {/* Display forecast data */}
+
           <h3>Forecast</h3>
+
           {weather.forecast.forecastday.map((day) => (
             <div key={day.date}>
               <br></br><br></br>
-              <h4>{day.date}</h4>
+              <h4>{formatDate(day.date)}</h4>
               <strong>Temperature:</strong>
             <br></br><br></br>Average: {day.day.avgtemp_c} °C | Min: {day.day.mintemp_c} °C | Max: {day.day.maxtemp_c} °C<br></br><br></br>Average: {day.day.avgtemp_f} °F | Min: {day.day.mintemp_f} °F | Max: {day.day.maxtemp_f} °F
               
               <br></br><br></br>
               
               <strong>Rain:</strong> {day.day.totalprecip_mm} mm | {day.day.totalprecip_in} in
-              
+              <br></br>
+              <strong>Chance of Rain:</strong> {day.day.daily_chance_of_rain} % | {day.day.condition.text}
               <br></br><br></br>
 
 <strong>Snow:</strong> {day.day.totalsnow_cm} cm
+<br></br>
+<strong>Chance of Snow:</strong> {day.day.daily_chance_of_snow} % 
 
 <br></br><br></br>
 
@@ -168,6 +175,18 @@ function App() {
               <br></br><br></br>
 
               <strong>Visibility:</strong> Average: {day.day.avgvis_miles} miles | {day.day.avgvis_km} km
+
+              <br></br><br></br>
+
+              <strong>Humidity:</strong> Average: {day.day.avghumidity}
+
+              <br></br><br></br>
+
+              <strong>UV: </strong> {day.day.uv}
+
+              <br></br><br></br>
+
+<strong>Sunrise</strong> {day.astro.sunrise} | <strong>Sunset</strong> {day.astro.sunset}
             </div>
           ))}
         </div>
