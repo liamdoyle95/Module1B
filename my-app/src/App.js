@@ -6,6 +6,7 @@ import './App.css';
 function App() {
   const [weather, setWeather] = useState(null);
   const [location, setLocation] = useState('London');
+  const [activeView, setActiveView] = useState('current'); // Track the active view
   
   // API key for weatherapi.com
   const apiKey = '14fd6cf7039b4fd68cf213908231007';
@@ -14,7 +15,6 @@ function App() {
   const forecastApiUrl = 'https://api.weatherapi.com/v1/forecast.json';
   
   const fetchWeather = async (location) => {
-
     const query = queryString.stringify({ key: apiKey, q: location });
     const currentUrl = `${currentApiUrl}?${query}`;
     const forecastUrl = `${forecastApiUrl}?${query}&days=3`;
@@ -44,6 +44,11 @@ function App() {
 
   const formatDate = (dateString) => {
     const options = { day: 'numeric', month: 'long', year: 'numeric' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
+  const formatDateAndTime = (dateString) => {
+    const options = { day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true };
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
   
@@ -92,17 +97,33 @@ function App() {
    
       {weather && (
         <div>
+          <div className="toggle-buttons">
 
-          <h3>Current Weather</h3>
-          
-          <h3>Location</h3>
+            <button
+              className={activeView === 'current' ? 'active' : ''}
+              onClick={() => setActiveView('current')}
+            >
+              Current Weather
+            </button>
+            <button
+              className={activeView === 'forecast' ? 'active' : ''}
+              onClick={() => setActiveView('forecast')}
+            >
+              Forecast
+            </button>
+          </div>
+          <div className="weather-info">
+            {activeView === 'current' && (
+              <div>
+                <h3>Current Weather</h3>
+                <h3>Location</h3>
           <p>{weather.location.region}, {weather.location.country}</p>
           <p>Lat: {weather.location.lat}, Long: {weather.location.lon}</p>
           <p>Local Time: {formatTime(weather.location.localtime)}, {weather.location.tz_id}</p>
          
          <br></br>
 
-          <p><strong>Last Updated:</strong> {formatDate(weather.current.last_updated)}</p>
+          <p><strong>Last Updated:</strong> {formatDateAndTime(weather.current.last_updated)}</p>
           <br></br>
           <p>
           <strong>Temperature:</strong>
@@ -145,15 +166,14 @@ function App() {
             <strong>Pressure:</strong> {weather.current.pressure_mb} mb | {weather.current.pressure_in} in
 
             </p>
-          
-          <br></br><br></br>
-
-          <h3>Forecast</h3>
-
-          {weather.forecast.forecastday.map((day) => (
-            <div key={day.date}>
-              <br></br><br></br>
-              <h4>{formatDate(day.date)}</h4>
+              </div>
+            )}
+            {activeView === 'forecast' && (
+              <div>
+                <h3>Forecast</h3>
+                {weather.forecast.forecastday.map((day) => (
+                  <div key={day.date}>
+                            <h4>{formatDate(day.date)}</h4>
               <strong>Temperature:</strong>
             <br></br><br></br>Average: {day.day.avgtemp_c} °C | Min: {day.day.mintemp_c} °C | Max: {day.day.maxtemp_c} °C<br></br><br></br>Average: {day.day.avgtemp_f} °F | Min: {day.day.mintemp_f} °F | Max: {day.day.maxtemp_f} °F
               
@@ -187,8 +207,12 @@ function App() {
               <br></br><br></br>
 
 <strong>Sunrise</strong> {day.astro.sunrise} | <strong>Sunset</strong> {day.astro.sunset}
-            </div>
-          ))}
+
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       )}
     </div>
