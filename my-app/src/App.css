@@ -3,6 +3,68 @@ h1 {
   font-size: 28px;
 }
 
+.app-warning {
+  background-color: red;
+}
+
+.simulate-button {
+  background-color: #ff0000;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.simulate-button:hover {
+  background-color: #cc0000;
+}
+
+
+.alert {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #fddcdc;
+  color: #ff0000;
+  padding: 20px;
+  border: 1px solid #ff0000;
+  border-radius: 5px;
+  z-index: 999;
+}
+
+.alert-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+}
+
+.alert h4 {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.close-button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: transparent;
+  border: none;
+  color: #ff0000;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+
+.close-button:hover {
+  text-decoration: underline;
+}
+
+
 .weather-details {
   border: 2px solid #ccc;
   padding: 10px;

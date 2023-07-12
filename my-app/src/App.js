@@ -8,17 +8,33 @@ function App() {
   const [location, setLocation] = useState('London');
   const [activeView, setActiveView] = useState('current');
   const [parametersVisible, setParametersVisible] = useState(false);
+  const [thunderstormWarnings, setThunderstormWarnings] = useState(null);
+  const [windWarnings, setWindWarnings] = useState(null);
+  const [egrWarnings, setEgrWarnings] = useState(null);
+  
+  const handleCloseWarning = () => {
+    setThunderstormWarnings(false);
+    setWindWarnings(false);
+    setEgrWarnings(false);
+  };
 
+  const handleCloseParameters = () => {
+    setParametersVisible(false);
+  };
+
+  const appClassName = thunderstormWarnings || windWarnings || egrWarnings ? 'app app-warning' : 'app';
+
+  
   const toggleParametersVisibility = () => {
     setParametersVisible(!parametersVisible);
   };
-  
+
   // API key for weatherapi.com
   const apiKey = '14fd6cf7039b4fd68cf213908231007';
   // Weather API URLs
   const currentApiUrl = 'https://api.weatherapi.com/v1/current.json';
   const forecastApiUrl = 'https://api.weatherapi.com/v1/forecast.json';
-  
+
   const fetchWeather = async (location) => {
     const query = queryString.stringify({ key: apiKey, q: location });
     const currentUrl = `${currentApiUrl}?${query}`;
@@ -26,18 +42,26 @@ function App() {
 
     const currentResponse = await fetch(currentUrl);
     const currentData = await currentResponse.json();
-    
+
     const forecastResponse = await fetch(forecastUrl);
     const forecastData = await forecastResponse.json();
 
     const combinedData = {
       current: currentData.current,
       forecast: forecastData.forecast,
-      location: currentData.location
+      location: currentData.location,
     };
+
+    const alertsQuery = queryString.stringify({ key: apiKey, q: location, alerts: 'yes' });
+    const alertsUrl = `${currentApiUrl}?${alertsQuery}`;
+    const alertsResponse = await fetch(alertsUrl);
+    const alertsData = await alertsResponse.json();
+    const thunderstormWarnings = alertsData.alert;
+
+    setThunderstormWarnings(thunderstormWarnings);
     setWeather(combinedData);
   };
-  
+
   useEffect(() => {
     fetchWeather(location);
   }, [location]);
@@ -53,35 +77,62 @@ function App() {
   };
 
   const formatDateAndTime = (dateString) => {
-    const options = { day: 'numeric', month: 'long', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true };
+    const options = {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+      hour12: true,
+    };
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
-  
+
+  const simulateThunderstormAlert = () => {
+    const sampleWarnings = [
+      { id: 1, title: 'Severe Thunderstorm Warning' },
+      { id: 2, title: 'Flash Flood Warning' },
+    ];
+    setThunderstormWarnings(sampleWarnings);
+  };
+
+  const simulateWindAlert = () => {
+    const sampleWarnings = [
+      { id: 1, title: 'High Winds' },
+      { id: 2, title: 'High Gusting Winds' },
+    ];
+    setWindWarnings(sampleWarnings);
+  };
+
+  const simulateEgrAlert = () => {
+    const sampleWarnings = [
+      { id: 1, title: 'EGR Limits Met' },
+      { id: 2, title: 'EGR Limits' },
+    ];
+    setEgrWarnings(sampleWarnings);
+  };
   return (
-    <div>     
+    <div className={appClassName}> 
       {weather && (
         <div>
           <div className="toggle-buttons">
-
-            <button
-              className={activeView === 'current' ? 'active' : ''}
-              onClick={() => setActiveView('current')}
-            >
+            <button className={activeView === 'current' ? 'active' : ''} onClick={() => setActiveView('current')}>
               Current Weather
             </button>
-            <button
-              className={activeView === 'forecast' ? 'active' : ''}
-              onClick={() => setActiveView('forecast')}
-            >
+            <button className={activeView === 'forecast' ? 'active' : ''} onClick={() => setActiveView('forecast')}>
               Forecast
             </button>
           </div>
 
-          <br></br>
-          
-          <select className="select-location" value={location} onChange={(event) => setLocation(event.target.value)}>
-      <option value="London">Select a location</option>
-      <option value="Akrotiri, Limassol">Akrotiri</option>
+          <br />
+
+          <select
+            className="select-location"
+            value={location}
+            onChange={(event) => setLocation(event.target.value)}
+          >
+            <option value="London">Select a location</option>
+            <option value="Akrotiri, Limassol">Akrotiri</option>
       <option value="Ascension Islands">Ascension Islands</option>
       <option value="Benson, UK">Benson</option>
       <option value="Boscombe Down, UK">Boscombe Down</option>
@@ -117,16 +168,36 @@ function App() {
       <option value="Wittering, UK">Wittering</option>
       <option value="Woodvale, UK">Woodvale</option>
       <option value="Wyton, UK">Wyton</option>
-      </select>
+
+          </select>
+
+          <br />
+
+          <div className="weather-container">
+          <button className="simulate-button" onClick={simulateThunderstormAlert}>
+  Simulate Thunderstorm Alert
+</button>
 
 <br></br>
 
-      <div className="weather-container">
-              <h3 className="parameters" onClick={toggleParametersVisibility}>Aircraft Parameters</h3>
-              {parametersVisible && (
-          <>
-              <br></br>
-              <h3>Typhoon Limits</h3>
+<button className="simulate-button" onClick={simulateWindAlert}>
+  Simulate Wind Alert
+</button>
+
+<br></br>
+
+<button className="simulate-button" onClick={simulateEgrAlert}>
+  Simulate EGR Limits Alert
+</button>
+
+           
+            <h3 className="parameters" onClick={toggleParametersVisibility}>
+              Aircraft Parameters
+            </h3>
+            {parametersVisible && (
+              <>
+                <br />
+                <h3>Typhoon Limits</h3>
               <div className="weather-details">
               <p><strong>Engine Ground Run</strong><br></br><br></br>
               Min Temp = X °C | X °F & Min Visabilty = X Metres</p>
@@ -195,11 +266,12 @@ If winds are above 35 KTS: Do NOT open Panels
         )}        
             </div>
 
+
           <div className="weather-container">
             {activeView === 'current' && (
-            <div className="current-weather">
+              <div className="current-weather">
                 <h3 className="title">Current Weather for {location}</h3>
-          <p className="subtitle">{weather.location.region}, {weather.location.country} | Lat: {weather.location.lat}, Long: {weather.location.lon} | Local Time: {formatTime(weather.location.localtime)}, {weather.location.tz_id}</p>
+                <p className="subtitle">{weather.location.region}, {weather.location.country} | Lat: {weather.location.lat}, Long: {weather.location.lon} | Local Time: {formatTime(weather.location.localtime)}, {weather.location.tz_id}</p>
           <p className="last-updated"><strong>Last Updated:</strong> {formatDateAndTime(weather.current.last_updated)}</p>
           <br></br>
           <p className="weather-details">
@@ -246,10 +318,11 @@ If winds are above 35 KTS: Do NOT open Panels
             <strong>Pressure</strong><br></br>{weather.current.pressure_mb} mb | {weather.current.pressure_in} in
 
             </p>
+
               </div>
             )}
             {activeView === 'forecast' && (
-               <div className="forecast">
+              <div className="forecast">
                 <h3 className="title">Forecast for {location}</h3>
                 <p className="subtitle">{weather.location.region}, {weather.location.country} | Lat: {weather.location.lat}, Long: {weather.location.lon} | Local Time: {formatTime(weather.location.localtime)}, {weather.location.tz_id}</p>
                 {weather.forecast.forecastday.map((day) => (
@@ -285,12 +358,46 @@ If winds are above 35 KTS: Do NOT open Panels
               <br></br><br></br>
 
 <strong>Sunrise</strong> {day.astro.sunrise} | <strong>Sunset</strong> {day.astro.sunset}
-
-                  </div>
+</div>
                 ))}
+
+
               </div>
             )}
           </div>
+
+          {thunderstormWarnings && thunderstormWarnings.length > 0 && (
+             <div className="alert">
+          <div className="alert-content">
+            <h4><strong>Thunderstorm Warning!</strong><br></br><br></br>STOP all Fuelling activities immediately.<br></br></h4>
+            <button className="close-button" onClick={handleCloseWarning}>
+            Close
+            </button>
+          </div>
+        </div>
+          )}
+
+{windWarnings && windWarnings.length > 0 && (
+             <div className="alert">
+          <div className="alert-content">
+            <h4><strong>Wind Warning!</strong><br></br><br></br>Refer to Wind Limits and STOP relevant activities immediately.<br></br></h4>
+            <button className="close-button" onClick={handleCloseWarning}>
+            Close
+            </button>
+          </div>
+        </div>
+          )}
+
+{egrWarnings && egrWarnings.length > 0 && (
+             <div className="alert">
+          <div className="alert-content">
+            <h4><strong>EGR Condition Limits!</strong><br></br><br></br>Low Visabilty + Low Temp = Icy Conditions<br></br><br></br>STOP EGR activities immediately!</h4>
+            <button className="close-button" onClick={handleCloseWarning}>
+            Close
+            </button>
+          </div>
+        </div>
+          )}
         </div>
       )}
     </div>
