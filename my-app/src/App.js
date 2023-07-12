@@ -9,17 +9,31 @@ function App() {
   const [activeView, setActiveView] = useState('current');
   const [parametersVisible, setParametersVisible] = useState(false);
   const [thunderstormWarnings, setThunderstormWarnings] = useState(null);
-  const [windWarnings, setWindWarnings] = useState(null);
+  const [windWarnings, setWindWarnings] = useState(false);
+
+  useEffect(() => {
+    if (weather && (weather.current.wind_mph > 35 || weather.current.gust_mph > 35)) {
+      setWindWarnings(true);
+    } else {
+      setWindWarnings(false);
+    }
+  }, [weather]);
+  
   const [egrWarnings, setEgrWarnings] = useState(null);
+
+  useEffect(() => {
+    if (weather && weather.current.temp_c < 5 && weather.current.vis_km < 1) {
+      setEgrWarnings(true);
+    } else {
+      setEgrWarnings(false);
+    }
+  }, [weather]);
+  
   
   const handleCloseWarning = () => {
     setThunderstormWarnings(false);
     setWindWarnings(false);
     setEgrWarnings(false);
-  };
-
-  const handleCloseParameters = () => {
-    setParametersVisible(false);
   };
 
   const appClassName = thunderstormWarnings || windWarnings || egrWarnings ? 'app app-warning' : 'app';
@@ -199,11 +213,11 @@ function App() {
                 <br />
                 <h3>Typhoon Limits</h3>
               <div className="weather-details">
-              <p><strong>Engine Ground Run</strong><br></br><br></br>
+              <p><strong>Engine Ground Run Limits</strong><br></br><br></br>
               Min Temp = X °C | X °F & Min Visabilty = X Metres</p>
               </div><br></br>
               <div className="weather-details">
-              <p><strong>Wind Speed</strong><br></br><br></br>
+              <p><strong>Wind Limits</strong><br></br><br></br>
               Divide the wind speed given in MPH by 1.15 to obtain the equivelent speed in KTS.<br></br>
               Wind Direction refers to where wind is coming from.
               <br></br><br></br>
@@ -380,7 +394,7 @@ If winds are above 35 KTS: Do NOT open Panels
 {windWarnings && windWarnings.length > 0 && (
              <div className="alert">
           <div className="alert-content">
-            <h4><strong>Wind Warning!</strong><br></br><br></br>Refer to Wind Limits and STOP relevant activities immediately.<br></br></h4>
+            <h4><strong>Wind Warning!</strong><br></br><br></br>Refer to Aircraft Parameters, Wind Limits and STOP relevant activities immediately.<br></br></h4>
             <button className="close-button" onClick={handleCloseWarning}>
             Close
             </button>
