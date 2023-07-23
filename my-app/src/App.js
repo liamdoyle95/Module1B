@@ -12,7 +12,7 @@ function App() {
   const [windWarnings, setWindWarnings] = useState(false);
 
   useEffect(() => {
-    if (weather && (weather.current.wind_mph > 35 || weather.current.gust_mph > 35)) {
+    if (weather && (weather.current.wind_mph > 40 || weather.current.gust_mph > 40)) {
       setWindWarnings(true);
     } else {
       setWindWarnings(false);
@@ -211,7 +211,7 @@ function App() {
             {parametersVisible && (
               <>
                 <br />
-                <h3>Typhoon Limits</h3>
+                <h3>Limits</h3>
               <div className="weather-details">
               <p><strong>Engine Ground Run Limits</strong><br></br><br></br>
               Min Temp = X °C | X °F & Min Visabilty = X Metres</p>
@@ -271,8 +271,6 @@ If Winds are above 45 KTS: Put / Leave in Hangar or turn into wind
 <br></br><br></br>
 If winds are above 40 KTS: Do NOT use A/C steps
 <br></br><br></br>
-If winds are above 39 KTS: Do NOT open Radome
-<br></br><br></br>
 If winds are above 35 KTS: Do NOT open Panels 
   </p>
               </div>
@@ -298,11 +296,11 @@ If winds are above 35 KTS: Do NOT open Panels
 
             <br></br><br></br>
             
-            <strong>Wind Speed</strong><br></br>{weather.current.wind_mph} mph
+            <strong>Wind Speed</strong><br></br>{weather.current.wind_mph} mph | {(weather.current.wind_mph/1.150779).toFixed(1)} kts
             
             <br></br><br></br>
             
-            <strong>Wind Gust</strong><br></br>{weather.current.gust_mph} mph 
+            <strong>Wind Gust</strong><br></br>{weather.current.gust_mph} mph | {(weather.current.gust_mph/1.150779).toFixed(1)} kts
             
             <br></br><br></br>
             
@@ -352,7 +350,7 @@ If winds are above 35 KTS: Do NOT open Panels
 
 <br></br><br></br>
 
-            <strong>Windspeed</strong><br></br>Max {day.day.maxwind_mph} mph
+            <strong>Max Windspeed</strong><br></br>{day.day.maxwind_mph} mph | {(day.day.maxwind_mph/1.150779).toFixed(1)} kts
 
               <br></br><br></br>
               
