@@ -1,15 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import queryString from 'query-string';
+import LoginPage from './LoginPage';
 
 import './App.css';
 
 function App() {
+  const storedToken = localStorage.getItem('userToken');
+  const [isLoggedIn, setIsLoggedIn] = useState(Boolean(storedToken));
+
   const [weather, setWeather] = useState(null);
   const [location, setLocation] = useState('London');
   const [activeView, setActiveView] = useState('current');
   const [parametersVisible, setParametersVisible] = useState(false);
   const [thunderstormWarnings, setThunderstormWarnings] = useState(null);
   const [windWarnings, setWindWarnings] = useState(false);
+
+  const handleLogin = (token) => {
+    localStorage.setItem('userToken', token);
+    setIsLoggedIn(true);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('userToken');
+    setIsLoggedIn(false);
+  };
 
   useEffect(() => {
     if (weather && (weather.current.wind_mph > 40 || weather.current.gust_mph > 40)) {
@@ -126,7 +140,10 @@ function App() {
     setEgrWarnings(sampleWarnings);
   };
   return (
+    <div className={appClassName}>
+    {isLoggedIn ? (
     <div className={appClassName}> 
+         <button className="Logout" onClick={handleLogout}>Logout</button>
       {weather && (
         <div>
           <div className="toggle-buttons">
@@ -412,8 +429,12 @@ If winds are above 35 KTS: Do NOT open Panels
           )}
         </div>
       )}
-    </div>
-  );
-}
+          </div>
+        ) : (
+          <LoginPage onLogin={handleLogin} />
+        )}
+      </div>
+      );
+      }
 
 export default App;
