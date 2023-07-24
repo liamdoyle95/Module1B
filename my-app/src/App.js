@@ -251,44 +251,44 @@ function App() {
 <tbody>
 <tr>
 <td><strong>Canopy Opening</strong></td>
-<td>45</td>
-<td>60</td>
-<td>60</td>
+<td>X</td>
+<td>Y</td>
+<td>Z</td>
 </tr>
 <tr>
 <td><strong>EGR</strong></td>
-<td>N/A</td>
-<td>30</td>
-<td>N/A</td>
+<td>A</td>
+<td>B</td>
+<td>C</td>
 </tr>
 <tr>
 <td><strong>Towing</strong></td>
-<td>45</td>
-<td>N/A</td>
-<td>N/A</td>
+<td>X</td>
+<td>Y</td>
+<td>Z</td>
 </tr>
 <tr>
 <td><strong>Landing / Take Off</strong></td>
-<td>30</td>
-<td>20</td>
-<td>40</td>
+<td>A</td>
+<td>B</td>
+<td>C</td>
 </tr>
 <tr>
 <td><strong>Taxiing</strong></td>
 <td>Cleared up </td>
-<td>to 45 KTS </td>
+<td>to X KTS </td>
 <td>surface wind</td>
 </tr>
 </tbody>
 </table>
 <br></br><br></br>
-If Winds are above 60 KTS: Put / Leave in Hangar
+If Winds are above X KTS: Put / Leave in Hangar
 <br></br><br></br>
-If Winds are above 45 KTS: Put / Leave in Hangar or turn into wind
+If Winds are above X KTS: Put / Leave in Hangar or turn into wind
 <br></br><br></br>
-If winds are above 40 KTS: Do NOT use A/C steps
+If winds are above X KTS: Do NOT use A/C steps
 <br></br><br></br>
-If winds are above 35 KTS: Do NOT open Panels 
+If winds are above X KTS: Do NOT open Panels 
   </p>
               </div>
               </>
