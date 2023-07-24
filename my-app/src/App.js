@@ -5,6 +5,8 @@ import LoginPage from './LoginPage';
 import './App.css';
 
 function App() {
+
+  // login
   const storedToken = localStorage.getItem('userToken');
   const [isLoggedIn, setIsLoggedIn] = useState(Boolean(storedToken));
 
@@ -12,19 +14,25 @@ function App() {
   const [location, setLocation] = useState('London');
   const [activeView, setActiveView] = useState('current');
   const [parametersVisible, setParametersVisible] = useState(false);
+
+  // weather parameters
   const [thunderstormWarnings, setThunderstormWarnings] = useState(null);
   const [windWarnings, setWindWarnings] = useState(false);
+  const [egrWarnings, setEgrWarnings] = useState(null);
 
+  // set logged in to true from input 
   const handleLogin = (token) => {
     localStorage.setItem('userToken', token);
     setIsLoggedIn(true);
   };
 
+  // set logged in to false from button
   const handleLogout = () => {
     localStorage.removeItem('userToken');
     setIsLoggedIn(false);
   };
 
+  // wind warning parameters set to 40 mph / 34.759 kts to trigger warning
   useEffect(() => {
     if (weather && (weather.current.wind_mph > 40 || weather.current.gust_mph > 40)) {
       setWindWarnings(true);
@@ -33,8 +41,7 @@ function App() {
     }
   }, [weather]);
   
-  const [egrWarnings, setEgrWarnings] = useState(null);
-
+   // temp warning parameters set to below 5 degrees c & visability less than 1 km to trigger EGR warning
   useEffect(() => {
     if (weather && weather.current.temp_c < 5 && weather.current.vis_km < 1) {
       setEgrWarnings(true);
@@ -42,17 +49,18 @@ function App() {
       setEgrWarnings(false);
     }
   }, [weather]);
-  
-  
+
+   // close button to close all warnings (also for simulated warnings)
   const handleCloseWarning = () => {
     setThunderstormWarnings(false);
     setWindWarnings(false);
     setEgrWarnings(false);
   };
 
+  // set app backgrond to red when any of the warning parameters are met
   const appClassName = thunderstormWarnings || windWarnings || egrWarnings ? 'app app-warning' : 'app';
 
-  
+  // expand and collapase of the parameters
   const toggleParametersVisibility = () => {
     setParametersVisible(!parametersVisible);
   };
@@ -63,6 +71,7 @@ function App() {
   const currentApiUrl = 'https://api.weatherapi.com/v1/current.json';
   const forecastApiUrl = 'https://api.weatherapi.com/v1/forecast.json';
 
+  // fetch weather (for both live and forecast) depending on location selected from dropdown via API key. 
   const fetchWeather = async (location) => {
     const query = queryString.stringify({ key: apiKey, q: location });
     const currentUrl = `${currentApiUrl}?${query}`;
@@ -80,6 +89,7 @@ function App() {
       location: currentData.location,
     };
 
+    // check for thunderstorm warning, if true then trigger thunderstorm warning
     const alertsQuery = queryString.stringify({ key: apiKey, q: location, alerts: 'yes' });
     const alertsUrl = `${currentApiUrl}?${alertsQuery}`;
     const alertsResponse = await fetch(alertsUrl);
@@ -94,16 +104,19 @@ function App() {
     fetchWeather(location);
   }, [location]);
 
+  // time formatter only
   const formatTime = (timeString) => {
     const options = { hour: 'numeric', minute: 'numeric', hour12: true };
     return new Date(timeString).toLocaleTimeString(undefined, options);
   };
 
+  // date formatter only 
   const formatDate = (dateString) => {
     const options = { day: 'numeric', month: 'long', year: 'numeric' };
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
+  // both time and date formatter
   const formatDateAndTime = (dateString) => {
     const options = {
       day: 'numeric',
@@ -141,11 +154,13 @@ function App() {
   };
   return (
     <div className={appClassName}>
+      {/* check if user is logged in, if logged in, display all code below. If not logged in display LoginPage.js */}
     {isLoggedIn ? (
     <div className={appClassName}> 
          <button className="Logout" onClick={handleLogout}>Logout</button>
       {weather && (
         <div>
+          {/* toggle buttons between live and forecast weather */}
           <div className="toggle-buttons">
             <button className={activeView === 'current' ? 'active' : ''} onClick={() => setActiveView('current')}>
               Current Weather
@@ -156,7 +171,7 @@ function App() {
           </div>
 
           <br />
-
+          {/* location dropdown selector for all RAF bases around the world */}
           <select
             className="select-location"
             value={location}
@@ -203,7 +218,8 @@ function App() {
           </select>
 
           <br />
-
+          
+          {/* Thunderstorm simulation button */}
           <div className="weather-container">
           <button className="simulate-button" onClick={simulateThunderstormAlert}>
   Simulate Thunderstorm Alert
@@ -211,12 +227,14 @@ function App() {
 
 <br></br>
 
+ {/* Wind simulation button */}
 <button className="simulate-button" onClick={simulateWindAlert}>
   Simulate Wind Alert
 </button>
 
 <br></br>
 
+ {/* EGR limits simulation button */}
 <button className="simulate-button" onClick={simulateEgrAlert}>
   Simulate EGR Limits Alert
 </button>
@@ -225,6 +243,7 @@ function App() {
             <h3 className="parameters" onClick={toggleParametersVisibility}>
               Aircraft Parameters
             </h3>
+             {/* Below will be true / false depending on whether the text has been clicked and will hide or show the parameters below.  */}
             {parametersVisible && (
               <>
                 <br />
@@ -297,6 +316,7 @@ If winds are above X KTS: Do NOT open Panels
 
 
           <div className="weather-container">
+            {/* live weather */}
             {activeView === 'current' && (
               <div className="current-weather">
                 <h3 className="title">Current Weather for {location}</h3>
@@ -350,6 +370,7 @@ If winds are above X KTS: Do NOT open Panels
 
               </div>
             )}
+            {/* forecast weather */}
             {activeView === 'forecast' && (
               <div className="forecast">
                 <h3 className="title">Forecast for {location}</h3>
@@ -395,6 +416,7 @@ If winds are above X KTS: Do NOT open Panels
             )}
           </div>
 
+          {/* thunder storm warning display */}
           {thunderstormWarnings && thunderstormWarnings.length > 0 && (
              <div className="alert">
           <div className="alert-content">
@@ -406,6 +428,7 @@ If winds are above X KTS: Do NOT open Panels
         </div>
           )}
 
+     {/* wind warning display */}
 {windWarnings && windWarnings.length > 0 && (
              <div className="alert">
           <div className="alert-content">
@@ -417,6 +440,7 @@ If winds are above X KTS: Do NOT open Panels
         </div>
           )}
 
+     {/* EGR warning display */}
 {egrWarnings && egrWarnings.length > 0 && (
              <div className="alert">
           <div className="alert-content">
@@ -430,6 +454,7 @@ If winds are above X KTS: Do NOT open Panels
         </div>
       )}
           </div>
+          // show LoginPage if loggedIn is false
         ) : (
           <LoginPage onLogin={handleLogin} />
         )}

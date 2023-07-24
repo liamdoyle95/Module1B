@@ -6,6 +6,7 @@ const LoginPage = ({ onLogin }) => {
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
+  // check username and password for login and display error message if incorrect 
   const handleLogin = (e) => {
     e.preventDefault();
     if (username === 'Weather' && password === 'Checker') {

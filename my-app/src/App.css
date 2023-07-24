@@ -1,3 +1,4 @@
+/* LoginPage.js start */
 .login-container {
   width: 300px;
   margin: 0 auto;
@@ -43,7 +44,9 @@ input {
 .Login:hover {
   background-color: green;
 }
+/* LoginPage.js start */
 
+/* Logout start */
 .Logout {
   width: 20%;
   padding: 10px;
@@ -61,13 +64,15 @@ input {
 .Logout:hover {
   background-color: black;
 }
+/* Logout stop */
 
-
+/* App.js start */
 h1 {
   margin-bottom: 20px;
   font-size: 28px;
 }
 
+/* warnings start */
 .app-warning {
   background-color: red;
 }
@@ -85,7 +90,6 @@ h1 {
 .simulate-button:hover {
   background-color: #cc0000;
 }
-
 
 .alert {
   position: fixed;
@@ -124,19 +128,21 @@ h1 {
   font-size: 16px;
 }
 
-
 .close-button:hover {
   text-decoration: underline;
 }
+/* warnings stop */
 
-
+/* weather start */
 .weather-details {
   border: 2px solid #ccc;
   padding: 10px;
   margin-bottom: 10px;
   text-align: center;
 }
+/* weather stop */
 
+/* parameters start */
 .parameters {
   cursor: pointer;
   font-weight: bold;
@@ -154,9 +160,9 @@ h1 {
     transform: scale(1);
   }
 }
+/* parameters start */
 
-
-
+/* app.js styling and dropdown start */
 .title {
   text-align: center;
 }
@@ -210,7 +216,7 @@ text-align: center;
   background-color: #fff;
   color: #333;
 }
-
+/* app.js styling and dropdown stop */
 
 /* Toggle buttons start */
 .toggle-buttons {
@@ -303,6 +309,7 @@ text-align: center;
 }
 /* Forecast end*/
 
+/* Device styling start */
 @media (max-width: 575.98px) {
   h1 {
     font-size: 24px;
@@ -365,3 +372,4 @@ text-align: center;
     font-size: 18px;
   }
 }
+/* Device styling end */
